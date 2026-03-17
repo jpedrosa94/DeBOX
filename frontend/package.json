@@ -1,0 +1,26 @@
+{
+  "name": "debox-frontend",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui"
+  },
+  "dependencies": {
+    "@mysten/enoki": "^1.0.4",
+    "@mysten/seal": "^1.1.0",
+    "@mysten/sui": "^2.7.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "@vitest/ui": "^4.1.0",
+    "vite": "^5.0.8",
+    "vitest": "^4.1.0"
+  }
+}

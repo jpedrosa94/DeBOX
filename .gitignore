@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+
+# Build artifacts
+frontend/dist/
+backend/server
+backend/walrus-backend
+
+# Environment files (contain secrets)
+.env
+frontend/.env
+backend/.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Move build output
+move/build/
+
+# Backend legacy data
+backend/data/
+
+# Docker volumes
+mongo-data/
+
+# Logs
+*.log
