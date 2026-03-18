@@ -17,11 +17,7 @@ nodes:
       - containerPort: 30080
         hostPort: 9080
         protocol: TCP
-      # Harbor (NodePort 30003 → host 5443)
-      - containerPort: 30003
-        hostPort: 5443
-        protocol: TCP
-      # Grafana (NodePort 30300 → host 3000)
+# Grafana (NodePort 30300 → host 3000)
       - containerPort: 30300
         hostPort: 3000
         protocol: TCP

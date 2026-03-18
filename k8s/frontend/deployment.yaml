@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: localhost:5443/debox/frontend:latest
+          image: ghcr.io/jpedrosa94/debox/frontend:latest
           ports:
             - containerPort: 5173
           envFrom:

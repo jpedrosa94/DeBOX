@@ -102,12 +102,12 @@ jobs:
         run: |
           cd k8s/backend
           kustomize edit set image \
-            localhost:5443/debox/backend=${{ env.IMAGE_PREFIX }}/backend:${{ needs.build-push-backend.outputs.sha_short }}
+            ghcr.io/jpedrosa94/debox/backend=${{ env.IMAGE_PREFIX }}/backend:${{ needs.build-push-backend.outputs.sha_short }}
       - name: Update frontend image tag
         run: |
           cd k8s/frontend
           kustomize edit set image \
-            localhost:5443/debox/frontend=${{ env.IMAGE_PREFIX }}/frontend:${{ needs.build-push-frontend.outputs.sha_short }}
+            ghcr.io/jpedrosa94/debox/frontend=${{ env.IMAGE_PREFIX }}/frontend:${{ needs.build-push-frontend.outputs.sha_short }}
       - name: Commit and push manifest changes
         run: |
           git config user.name "github-actions[bot]"

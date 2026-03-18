@@ -19,7 +19,10 @@
       "Bash(helm upgrade:*)",
       "Bash(rm -f /Users/julioalexandrepedrosademelo/Projects/mysten-labs/k8s/schema.cue /Users/julioalexandrepedrosademelo/Projects/mysten-labs/k8s/backend.cue /Users/julioalexandrepedrosademelo/Projects/mysten-labs/k8s/frontend.cue /Users/julioalexandrepedrosademelo/Projects/mysten-labs/k8s/mongo.cue /Users/julioalexandrepedrosademelo/Projects/mysten-labs/k8s/argocd/cmp-plugin.yaml)",
       "Bash(rm -rf /Users/julioalexandrepedrosademelo/Projects/mysten-labs/k8s/cue.mod)",
-      "Bash(kubectl kustomize:*)"
+      "Bash(kubectl kustomize:*)",
+      "Bash(sed -i '' 's|localhost:5443/debox/mongo:7|mongo:7|' /Users/julioalexandrepedrosademelo/Projects/mysten-labs/k8s/mongo/deployment.yaml)",
+      "Bash(sed -i '' 's|localhost:5443/debox/backend:latest|ghcr.io/jpedrosa94/debox/backend:latest|' /Users/julioalexandrepedrosademelo/Projects/mysten-labs/k8s/backend/deployment.yaml)",
+      "Bash(sed -i '' 's|localhost:5443/debox/frontend:latest|ghcr.io/jpedrosa94/debox/frontend:latest|' /Users/julioalexandrepedrosademelo/Projects/mysten-labs/k8s/frontend/deployment.yaml)"
     ]
   }
 }

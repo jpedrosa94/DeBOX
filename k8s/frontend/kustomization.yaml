@@ -7,6 +7,5 @@ resources:
 - configmap.yaml
 
 images:
-- name: localhost:5443/debox/frontend
-  newName: ghcr.io/jpedrosa94/debox/frontend
+- name: ghcr.io/jpedrosa94/debox/frontend
   newTag: sha-763eba1

@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: localhost:5443/debox/backend:latest
+          image: ghcr.io/jpedrosa94/debox/backend:latest
           ports:
             - containerPort: 3001
               name: http
