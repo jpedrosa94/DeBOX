@@ -9,4 +9,4 @@ resources:
 images:
 - name: ghcr.io/jpedrosa94/debox/frontend
   newName: ghcr.io/jpedrosa94/debox/frontend
-  newTag: sha-8693910
+  newTag: sha-ff916df
