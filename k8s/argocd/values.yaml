@@ -21,20 +21,20 @@ controller:
   resources:
     requests:
       cpu: 100m
-      memory: 256Mi
-    limits:
-      cpu: 500m
       memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 2Gi
 
 repoServer:
   replicas: 1
   resources:
     requests:
       cpu: 100m
-      memory: 128Mi
-    limits:
-      cpu: 300m
       memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
 
 redis:
   resources:
