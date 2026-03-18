@@ -9,4 +9,4 @@ resources:
 images:
 - name: ghcr.io/jpedrosa94/debox/backend
   newName: ghcr.io/jpedrosa94/debox/backend
-  newTag: sha-67658d2
+  newTag: sha-8693910
