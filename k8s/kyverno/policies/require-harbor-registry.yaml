@@ -1,0 +1,33 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-harbor-registry
+  annotations:
+    policies.kyverno.io/title: Require Images From Approved Registry
+    policies.kyverno.io/description: >-
+      All container images in the debox namespace must be pulled from the local
+      Harbor registry (localhost:5443/debox/) or GHCR (ghcr.io/jpedrosa94/debox/).
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: validate-image-registry
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - debox
+      validate:
+        message: >-
+          Image '{{request.object.spec.containers[].image}}' is not from an
+          approved registry. All images must use localhost:5443/debox/ or
+          ghcr.io/jpedrosa94/debox/ prefix.
+        anyPattern:
+          - spec:
+              containers:
+                - image: "localhost:5443/debox/*"
+          - spec:
+              containers:
+                - image: "ghcr.io/jpedrosa94/debox/*"

@@ -1,0 +1,29 @@
+expose:
+  type: nodePort
+  tls:
+    enabled: false
+  nodePort:
+    ports:
+      http:
+        port: 80
+        nodePort: 30003
+
+externalURL: http://localhost:5443
+
+persistence:
+  enabled: true
+  persistentVolumeClaim:
+    registry:
+      size: 5Gi
+    database:
+      size: 1Gi
+
+harborAdminPassword: "Harbor12345"
+
+# Disable components not needed for local dev
+trivy:
+  enabled: true
+notary:
+  enabled: false
+chartmuseum:
+  enabled: false

@@ -1,0 +1,15 @@
+loki:
+  enabled: true
+  persistence:
+    enabled: true
+    size: 5Gi
+  config:
+    auth_enabled: false
+    limits_config:
+      retention_period: 168h
+
+promtail:
+  enabled: true
+
+grafana:
+  enabled: false

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+  namespace: debox
+  labels:
+    app: frontend
+    team: debox
+data:
+  VITE_API_URL: "http://backend.debox.svc.cluster.local:3001"

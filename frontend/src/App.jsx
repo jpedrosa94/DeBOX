@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useZkLogin } from "./hooks/useZkLogin.js";
 import { useBalance } from "./hooks/useBalance.js";
 import { useFiles } from "./hooks/useFiles.js";
-import { setAuthToken } from "./api.js";
+
 import LoginPage from "./components/LoginPage.jsx";
 import Header from "./components/Header.jsx";
 import DropZone from "./components/DropZone.jsx";
@@ -29,10 +29,6 @@ export default function App() {
     }
   }, [handleCallback]);
 
-  // Sync auth token for API calls whenever session changes
-  useEffect(() => {
-    setAuthToken(session?.jwt || null);
-  }, [session]);
 
   if (!session) {
     return <LoginPage onLogin={initLogin} loading={authLoading} error={authError} />;

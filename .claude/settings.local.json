@@ -4,7 +4,22 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebSearch",
       "WebFetch(domain:sdk.mystenlabs.com)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(kubectl get:*)",
+      "WebFetch(domain:argo-cd.readthedocs.io)",
+      "WebFetch(domain:cue.dev)",
+      "WebFetch(domain:medium.com)",
+      "WebFetch(domain:cuelang.org)",
+      "Bash(cue version:*)",
+      "Bash(cue vet:*)",
+      "Bash(cue export:*)",
+      "Bash(kubectl apply:*)",
+      "Bash(kubectl delete:*)",
+      "Bash(kubectl logs:*)",
+      "Bash(helm upgrade:*)",
+      "Bash(rm -f /Users/julioalexandrepedrosademelo/Projects/mysten-labs/k8s/schema.cue /Users/julioalexandrepedrosademelo/Projects/mysten-labs/k8s/backend.cue /Users/julioalexandrepedrosademelo/Projects/mysten-labs/k8s/frontend.cue /Users/julioalexandrepedrosademelo/Projects/mysten-labs/k8s/mongo.cue /Users/julioalexandrepedrosademelo/Projects/mysten-labs/k8s/argocd/cmp-plugin.yaml)",
+      "Bash(rm -rf /Users/julioalexandrepedrosademelo/Projects/mysten-labs/k8s/cue.mod)",
+      "Bash(kubectl kustomize:*)"
     ]
   }
 }

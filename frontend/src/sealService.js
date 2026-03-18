@@ -75,13 +75,6 @@ async function getSealClient() {
   return _sealClient;
 }
 
-// ─── Address → hex id (matches Move `bcs::to_bytes(&address)`) ──────────────
-// Sui addresses are 32 raw bytes. BCS encodes fixed-size arrays as-is,
-// so the BCS bytes equal the raw address bytes — i.e. the hex address string.
-// Seal's encrypt() calls fromHex(id) internally, so id must be a hex string.
-function addressToId(suiAddress) {
-  return suiAddress; // e.g. "0xf0cd89c1..."
-}
 
 // ─── Encrypt ────────────────────────────────────────────────────────────────
 /**
@@ -91,7 +84,7 @@ function addressToId(suiAddress) {
  */
 export async function encryptFile(fileBuffer, userAddress) {
   const client = await getSealClient();
-  const id = addressToId(userAddress);
+  const id = userAddress;
 
   const { encryptedObject } = await client.encrypt({
     threshold: THRESHOLD,

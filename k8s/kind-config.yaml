@@ -1,0 +1,31 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+containerdConfigPatches:
+  - |-
+    [plugins."io.containerd.grpc.v1.cri".registry]
+      config_path = "/etc/containerd/certs.d"
+nodes:
+  - role: control-plane
+    kubeadmConfigPatches:
+      - |
+        kind: InitConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "ingress-ready=true"
+    extraPortMappings:
+      # Frontend (NodePort 30080 → host 9080)
+      - containerPort: 30080
+        hostPort: 9080
+        protocol: TCP
+      # Harbor (NodePort 30003 → host 5443)
+      - containerPort: 30003
+        hostPort: 5443
+        protocol: TCP
+      # Grafana (NodePort 30300 → host 3000)
+      - containerPort: 30300
+        hostPort: 3000
+        protocol: TCP
+      # ArgoCD (NodePort 30800 → host 8080)
+      - containerPort: 30800
+        hostPort: 8080
+        protocol: TCP

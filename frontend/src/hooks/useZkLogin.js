@@ -1,16 +1,17 @@
 import { useState, useCallback, useEffect } from "react";
 import { EnokiFlow } from "@mysten/enoki";
+import { setAuthToken } from "../api.js";
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 const ENOKI_API_KEY = import.meta.env.VITE_ENOKI_API_KEY;
 
-// Persist sessions across page refreshes via localStorage
+// sessionStorage — survives the OAuth redirect but clears when the tab closes
 const enokiFlow = new EnokiFlow({
   apiKey: ENOKI_API_KEY,
   store: {
-    get: (key) => localStorage.getItem(key),
-    set: (key, value) => localStorage.setItem(key, value),
-    delete: (key) => localStorage.removeItem(key),
+    get: (key) => sessionStorage.getItem(key),
+    set: (key, value) => sessionStorage.setItem(key, value),
+    delete: (key) => sessionStorage.removeItem(key),
   },
 });
 
@@ -35,6 +36,7 @@ export function useZkLogin() {
     enokiFlow.getSession().then((zkpSession) => {
       const { address } = enokiFlow.$zkLoginState.get();
       if (address) {
+        setAuthToken(zkpSession?.jwt || null);
         setSession({
           address,
           jwt: zkpSession?.jwt || null,
@@ -75,6 +77,7 @@ export function useZkLogin() {
         jwt: zkpSession?.jwt || null,
         ...(zkpSession?.jwt ? extractProfile(zkpSession.jwt) : {}),
       };
+      setAuthToken(newSession.jwt);
       setSession(newSession);
       return newSession;
     } catch (err) {
@@ -87,6 +90,7 @@ export function useZkLogin() {
 
   const logout = useCallback(async () => {
     await enokiFlow.logout();
+    setAuthToken(null);
     setSession(null);
   }, []);
 

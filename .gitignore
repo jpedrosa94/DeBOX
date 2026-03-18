@@ -30,5 +30,8 @@ backend/data/
 # Docker volumes
 mongo-data/
 
+# Cosign private key
+k8s/cosign.key
+
 # Logs
 *.log

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  namespace: debox
+  labels:
+    app: backend
+    team: debox
+data:
+  MONGODB_URI: "mongodb://mongo.debox.svc.cluster.local:27017"
+  MONGODB_DATABASE: "debox"
+  CORS_ORIGIN: "http://localhost:9080"
+  BACKEND_PORT: "3001"
+  WALRUS_PUBLISHER: "https://publisher.walrus-testnet.walrus.space"
+  WALRUS_AGGREGATOR: "https://aggregator.walrus-testnet.walrus.space"
+  WALRUS_EPOCHS: "5"
+  METRICS_PORT: "9090"
