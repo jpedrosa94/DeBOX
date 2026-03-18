@@ -31,4 +31,5 @@ var (
 	mongoDatabase    = getEnv("MONGODB_DATABASE", "debox")
 	metricsPort      = getEnvInt("METRICS_PORT", 9090)
 	googleClientID   = os.Getenv("GOOGLE_CLIENT_ID")
+	otelEndpoint     = os.Getenv("OTEL_ENDPOINT") // e.g. jaeger.monitoring.svc.cluster.local:4318
 )

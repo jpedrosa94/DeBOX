@@ -14,6 +14,11 @@
     "@mysten/enoki": "^1.0.4",
     "@mysten/seal": "^1.1.0",
     "@mysten/sui": "^2.7.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.213.0",
+    "@opentelemetry/instrumentation-fetch": "^0.213.0",
+    "@opentelemetry/resources": "^2.6.0",
+    "@opentelemetry/sdk-trace-web": "^2.6.0",
+    "@opentelemetry/semantic-conventions": "^1.40.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

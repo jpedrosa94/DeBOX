@@ -1,0 +1,106 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-mongodb
+  namespace: monitoring
+  labels:
+    grafana_dashboard: "1"
+data:
+  mongodb.json: |
+    {
+      "annotations": { "list": [] },
+      "editable": true,
+      "graphTooltip": 1,
+      "panels": [
+        {
+          "title": "MongoDB Connections",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": { "unit": "short", "custom": { "drawStyle": "line", "fillOpacity": 20, "lineWidth": 2 } }
+          },
+          "targets": [
+            { "expr": "mongodb_ss_connections{state=\"current\"}", "legendFormat": "Current" },
+            { "expr": "mongodb_ss_connections{state=\"available\"}", "legendFormat": "Available" }
+          ]
+        },
+        {
+          "title": "MongoDB Operations/sec",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": { "unit": "ops", "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2 } }
+          },
+          "targets": [
+            { "expr": "rate(mongodb_ss_opcounters{type=\"insert\"}[5m])", "legendFormat": "Insert" },
+            { "expr": "rate(mongodb_ss_opcounters{type=\"query\"}[5m])", "legendFormat": "Query" },
+            { "expr": "rate(mongodb_ss_opcounters{type=\"update\"}[5m])", "legendFormat": "Update" },
+            { "expr": "rate(mongodb_ss_opcounters{type=\"delete\"}[5m])", "legendFormat": "Delete" }
+          ]
+        },
+        {
+          "title": "MongoDB Memory Usage",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": { "unit": "bytes", "custom": { "drawStyle": "line", "fillOpacity": 20, "lineWidth": 2 } }
+          },
+          "targets": [
+            { "expr": "mongodb_ss_mem_resident * 1024 * 1024", "legendFormat": "Resident" },
+            { "expr": "mongodb_ss_mem_virtual * 1024 * 1024", "legendFormat": "Virtual" }
+          ]
+        },
+        {
+          "title": "MongoDB Document Operations/sec",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": { "unit": "ops", "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2 } }
+          },
+          "targets": [
+            { "expr": "rate(mongodb_ss_docsInserted[5m])", "legendFormat": "Inserted" },
+            { "expr": "rate(mongodb_ss_docsDeleted[5m])", "legendFormat": "Deleted" },
+            { "expr": "rate(mongodb_ss_docsUpdated[5m])", "legendFormat": "Updated" },
+            { "expr": "rate(mongodb_ss_docsReturned[5m])", "legendFormat": "Returned" }
+          ]
+        },
+        {
+          "title": "MongoDB Network (bytes/s)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": { "unit": "Bps", "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2 } }
+          },
+          "targets": [
+            { "expr": "rate(mongodb_ss_network_bytesIn[5m])", "legendFormat": "In" },
+            { "expr": "rate(mongodb_ss_network_bytesOut[5m])", "legendFormat": "Out" }
+          ]
+        },
+        {
+          "title": "Exporter Up",
+          "type": "stat",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "mappings": [
+                { "type": "value", "options": { "1": { "text": "Up", "color": "green" }, "0": { "text": "Down", "color": "red" } } }
+              ]
+            }
+          },
+          "targets": [
+            { "expr": "up{job=\"mongodb-exporter\"}", "legendFormat": "MongoDB Exporter" }
+          ]
+        }
+      ],
+      "schemaVersion": 39,
+      "tags": ["debox", "mongodb"],
+      "time": { "from": "now-1h", "to": "now" },
+      "title": "DeBOX MongoDB",
+      "uid": "debox-mongodb"
+    }

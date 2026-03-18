@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jaeger
+  namespace: monitoring
+  labels:
+    app: jaeger
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jaeger
+  template:
+    metadata:
+      labels:
+        app: jaeger
+    spec:
+      containers:
+        - name: jaeger
+          image: jaegertracing/all-in-one:1.57
+          env:
+            - name: COLLECTOR_OTLP_ENABLED
+              value: "true"
+            - name: COLLECTOR_OTLP_HTTP_CORS_ALLOWED_ORIGINS
+              value: "*"
+            - name: COLLECTOR_OTLP_HTTP_CORS_ALLOWED_HEADERS
+              value: "*"
+          ports:
+            - containerPort: 4318
+              name: otlp-http
+            - containerPort: 16686
+              name: ui
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 300m
+              memory: 256Mi
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 16686
+            initialDelaySeconds: 5
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger
+  namespace: monitoring
+  labels:
+    app: jaeger
+spec:
+  type: NodePort
+  ports:
+    - port: 4318
+      targetPort: 4318
+      nodePort: 30431
+      name: otlp-http
+    - port: 16686
+      targetPort: 16686
+      nodePort: 30686
+      name: ui
+  selector:
+    app: jaeger

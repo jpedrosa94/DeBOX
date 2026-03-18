@@ -8,3 +8,4 @@ metadata:
     team: debox
 data:
   VITE_API_URL: "http://backend.debox.svc.cluster.local:3001"
+  VITE_OTEL_ENDPOINT: "http://localhost:4318"

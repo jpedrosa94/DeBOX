@@ -1,4 +1,4 @@
-.PHONY: help install dev dev-frontend dev-backend build test test-backend test-watch test-ui up down db clean k8s-up k8s-down k8s-status k8s-logs-backend k8s-logs-frontend k8s-policies k8s-monitoring-status argocd-status argocd-sync argocd-logs kustomize-build
+.PHONY: help install dev dev-frontend dev-backend build test test-backend test-watch test-ui up down db clean k8s-up k8s-down k8s-status k8s-logs-backend k8s-logs-frontend k8s-policies k8s-monitoring-status argocd-status argocd-sync argocd-logs kustomize-build jaeger-ui
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}'
@@ -83,6 +83,9 @@ k8s-policies: ## Show Kyverno policy status
 
 k8s-monitoring-status: ## Show monitoring pod status
 	kubectl get pods -n monitoring -o wide
+
+jaeger-ui: ## Port-forward Jaeger UI to http://localhost:16686
+	kubectl port-forward svc/jaeger -n monitoring 16686:16686
 
 # ─── ArgoCD ──────────────────────────────────────────────────────────────────
 

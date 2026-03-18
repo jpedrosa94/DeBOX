@@ -15,3 +15,4 @@ data:
   WALRUS_AGGREGATOR: "https://aggregator.walrus-testnet.walrus.space"
   WALRUS_EPOCHS: "5"
   METRICS_PORT: "9090"
+  OTEL_ENDPOINT: "jaeger.monitoring.svc.cluster.local:4318"

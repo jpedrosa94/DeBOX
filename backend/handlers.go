@@ -85,6 +85,11 @@ func handleUpload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	walrusUploadTotal.WithLabelValues("success").Inc()
+	auditEvent(r.Context(), "walrus.upload",
+		"filename", filename,
+		"mime_type", mimeType,
+		"size", originalSize,
+	)
 
 	var walrusResp struct {
 		NewlyCreated *struct {
@@ -114,6 +119,13 @@ func handleUpload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	auditEvent(r.Context(), "file.upload",
+		"blob_id", blobID,
+		"filename", filename,
+		"mime_type", mimeType,
+		"size", originalSize,
+		"status", status,
+	)
 	jsonOK(w, map[string]any{
 		"blobId":   blobID,
 		"url":      fmt.Sprintf("%s/v1/blobs/%s", walrusAggregator, blobID),
@@ -170,6 +182,7 @@ func handleListFiles(w http.ResponseWriter, r *http.Request) {
 	if entries == nil {
 		entries = []FileEntry{}
 	}
+	auditEvent(r.Context(), "file.list", "address", address, "count", len(entries))
 	jsonOK(w, entries)
 }
 
@@ -222,6 +235,13 @@ func handleSaveFile(w http.ResponseWriter, r *http.Request) {
 		jsonError(w, http.StatusInternalServerError, "Failed to save file entry")
 		return
 	}
+	auditEvent(r.Context(), "file.save",
+		"address", address,
+		"blob_id", entry.BlobID,
+		"filename", entry.Filename,
+		"size", entry.Size,
+		"encrypted", entry.IsEncrypted,
+	)
 	jsonOK(w, entry)
 }
 
@@ -243,6 +263,7 @@ func handleDeleteFile(w http.ResponseWriter, r *http.Request) {
 		jsonError(w, http.StatusInternalServerError, "Failed to delete file entry")
 		return
 	}
+	auditEvent(r.Context(), "file.delete", "address", address, "blob_id", blobID)
 	jsonOK(w, map[string]bool{"ok": true})
 }
 

@@ -12,6 +12,7 @@ import (
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 )
 
 // ─── MongoDB collections ─────────────────────────────────────────────────────
@@ -24,11 +25,14 @@ var (
 func main() {
 	initLogger()
 
+	shutdownTracer := initTracer(context.Background(), otelEndpoint)
+	defer shutdownTracer(context.Background())
+
 	// Connect to MongoDB
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	client, err := mongo.Connect(options.Client().ApplyURI(mongoURI))
+	client, err := mongo.Connect(options.Client().ApplyURI(mongoURI).SetMonitor(newMongoMonitor()))
 	if err != nil {
 		slog.Error("failed to connect to MongoDB", "error", err)
 		os.Exit(1)
@@ -85,7 +89,7 @@ func main() {
 		}
 	}()
 
-	handler := loggingHandler{next: corsHandler{mux}}
+	handler := otelhttp.NewHandler(loggingHandler{next: corsHandler{mux}}, "debox-backend")
 	if err := http.ListenAndServe(addr, handler); err != nil {
 		slog.Error("server stopped", "error", err)
 		os.Exit(1)

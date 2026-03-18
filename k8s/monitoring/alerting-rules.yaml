@@ -1,0 +1,107 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: debox-alerts
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+spec:
+  groups:
+    - name: debox.backend
+      rules:
+        - alert: HighErrorRate
+          expr: |
+            sum(rate(http_requests_total{status=~"5.."}[5m]))
+            /
+            sum(rate(http_requests_total[5m])) > 0.05
+          for: 5m
+          labels:
+            severity: warning
+            service: backend
+          annotations:
+            summary: "Backend error rate above 5%"
+            description: "{{ $value | humanizePercentage }} of requests are returning 5xx errors."
+
+        - alert: HighP95Latency
+          expr: |
+            histogram_quantile(0.95,
+              sum by (le, route) (rate(http_request_duration_seconds_bucket[5m]))
+            ) > 1
+          for: 5m
+          labels:
+            severity: warning
+            service: backend
+          annotations:
+            summary: "P95 latency above 1s on {{ $labels.route }}"
+            description: "P95 latency is {{ $value | humanizeDuration }} on route {{ $labels.route }}."
+
+        - alert: WalrusUploadFailureRate
+          expr: |
+            sum(rate(walrus_upload_total{outcome="failure"}[5m]))
+            /
+            sum(rate(walrus_upload_total[5m])) > 0.1
+          for: 5m
+          labels:
+            severity: critical
+            service: backend
+          annotations:
+            summary: "Walrus upload failure rate above 10%"
+            description: "{{ $value | humanizePercentage }} of Walrus uploads are failing."
+
+        - alert: BackendDown
+          expr: up{job="backend"} == 0
+          for: 1m
+          labels:
+            severity: critical
+            service: backend
+          annotations:
+            summary: "Backend is down"
+            description: "The backend Prometheus scrape target has been down for more than 1 minute."
+
+    - name: debox.pods
+      rules:
+        - alert: PodCrashLooping
+          expr: |
+            rate(kube_pod_container_status_restarts_total{namespace="debox"}[15m]) * 900 > 0
+          for: 15m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Pod {{ $labels.pod }} is crash-looping"
+            description: "Container {{ $labels.container }} in pod {{ $labels.pod }} has restarted {{ $value | humanize }} times in the last 15 minutes."
+
+        - alert: PodNotReady
+          expr: |
+            kube_pod_status_ready{namespace="debox", condition="true"} == 0
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Pod {{ $labels.pod }} is not ready"
+            description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} has been not ready for more than 5 minutes."
+
+        - alert: HighMemoryUsage
+          expr: |
+            container_memory_working_set_bytes{namespace="debox", container!=""}
+            /
+            on(pod, container) group_left()
+            kube_pod_container_resource_limits{namespace="debox", resource="memory"} > 0.85
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "{{ $labels.container }} memory usage above 85%"
+            description: "Container {{ $labels.container }} in pod {{ $labels.pod }} is using {{ $value | humanizePercentage }} of its memory limit."
+
+        - alert: HighCPUUsage
+          expr: |
+            rate(container_cpu_usage_seconds_total{namespace="debox", container!=""}[5m])
+            /
+            on(pod, container) group_left()
+            kube_pod_container_resource_limits{namespace="debox", resource="cpu"} > 0.85
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "{{ $labels.container }} CPU usage above 85%"
+            description: "Container {{ $labels.container }} in pod {{ $labels.pod }} is using {{ $value | humanizePercentage }} of its CPU limit."

@@ -29,3 +29,11 @@ nodes:
       - containerPort: 30800
         hostPort: 8080
         protocol: TCP
+      # Jaeger UI (NodePort 30686 → host 16686)
+      - containerPort: 30686
+        hostPort: 16686
+        protocol: TCP
+      # Jaeger OTLP HTTP (NodePort 30431 → host 4318)
+      - containerPort: 30431
+        hostPort: 4318
+        protocol: TCP
