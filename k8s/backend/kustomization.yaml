@@ -9,4 +9,4 @@ resources:
 images:
 - name: localhost:5443/debox/backend
   newName: ghcr.io/jpedrosa94/debox/backend
-  newTag: sha-763eba1
+  newTag: sha-63a7825
