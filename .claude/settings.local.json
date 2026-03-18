@@ -29,7 +29,8 @@
       "Bash(kubectl exec:*)",
       "Bash(xargs -I{} kubectl get {} -n monitoring -o 'jsonpath={.metadata.name}: {.data}')",
       "Bash(kubectl patch:*)",
-      "Bash(kubectl rollout:*)"
+      "Bash(kubectl rollout:*)",
+      "Bash(node -e \"const r = require\\(''''@opentelemetry/resources''''\\); console.log\\(Object.keys\\(r\\)\\)\")"
     ]
   }
 }
